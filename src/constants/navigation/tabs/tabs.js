@@ -38,7 +38,7 @@ function TabScreens() {
         name="Wallet"
         component={WalletScreen}
         options={{
-          title: 'Wallet',
+          headerShown: false,
         }}
       />
     </Tab.Navigator>

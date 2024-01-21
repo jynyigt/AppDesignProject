@@ -14,7 +14,6 @@ export default class baseControl {
   callServiceMethod(urlPath, data, method) {
     const apiHost = API_URL;
     let url = `${apiHost}/${urlPath}`;
-    console.log('callServiceMethod', url);
     var headers = {
       cookie: 'APIAuthToken=' + global.token,
       ApplicationKey: 'Mobile',
@@ -24,9 +23,6 @@ export default class baseControl {
     return this.callAnyServiceMethod(url, data, method, headers);
   }
   async callAnyServiceMethod(url, data = {}, method, headers) {
-    console.log('anyservice, url', url);
-    console.log('anyservice, data', data);
-
     const params = new URLSearchParams(data).toString();
     const fullUrl = params ? `${url}?${params}` : url;
 
@@ -36,8 +32,6 @@ export default class baseControl {
       headers,
       withCredentials: false,
     };
-    console.log({authOptions});
-
     return await axios(authOptions)
       .then(response => {
         return response.data;

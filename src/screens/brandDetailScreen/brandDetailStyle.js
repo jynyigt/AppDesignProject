@@ -69,5 +69,19 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '700',
   },
+  remainingView: {
+    bottom: 7,
+    right: 10,
+    position: 'absolute',
+    borderWidth: 1,
+    backgroundColor: '#1D1E1C',
+    borderRadius: 26,
+    padding: 8,
+  },
+  remainingText: {
+    fontSize: 13,
+    color: 'white',
+    fontWeight: '400',
+  },
 });
 export default styles;

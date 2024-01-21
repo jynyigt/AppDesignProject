@@ -9,8 +9,8 @@ function TabItemView({focused, tabBarLabel, name, navigation}) {
   const propsData = {
     width: 25,
     height: 24,
-    color1: focused && '#00384D',
-    color2: focused && '#FF002B',
+    color1: focused && '#1D1E1C',
+    color2: focused && '#1D1E1C',
   };
   const iconData = {
     Discover: <IconDiscover {...propsData} />,

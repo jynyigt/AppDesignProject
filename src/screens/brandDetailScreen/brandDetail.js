@@ -25,6 +25,19 @@ function BrandDetailScreen({navigation, route}) {
     });
   };
 
+  const getRemainingDays = () => {
+    if (brandDetail && brandDetail.RemainingText) {
+      const [day, month, year] = brandDetail.RemainingText.split('.');
+      const remainingDate = new Date(`${year}-${month}-${day}`);
+      const today = new Date();
+      const oneDay = 24 * 60 * 60 * 1000;
+      const timeDifference = remainingDate.getTime() - today.getTime();
+      const remainingDays = Math.ceil(timeDifference / oneDay);
+      return remainingDays > 0 ? remainingDays : 0;
+    }
+    return 0;
+  };
+
   useEffect(() => {
     getBrandDetail();
   }, [brandId]);
@@ -45,7 +58,7 @@ function BrandDetailScreen({navigation, route}) {
             />
           </Pressable>
         </View>
-        <View>
+        <View style={{flex: 1}}>
           <Image
             style={styles.brandImage}
             source={{uri: brandDetail?.ImageUrl}}
@@ -56,8 +69,12 @@ function BrandDetailScreen({navigation, route}) {
               source={{uri: brandDetail?.BrandIconUrl}}
             />
           </View>
+          <View style={styles.remainingView}>
+            <Text style={styles.remainingText}>
+              son {getRemainingDays()} gün
+            </Text>
+          </View>
         </View>
-
         <View style={styles.titleView}>
           <Text style={styles.titleText}>
             {brandDetail?.Title?.replace(/<[^>]*>/g, '')}
@@ -72,7 +89,6 @@ function BrandDetailScreen({navigation, route}) {
           />
         </View>
       </ScrollView>
-
       <View style={styles.buttonView}>
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Hemen Katıl</Text>

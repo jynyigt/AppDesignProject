@@ -1,80 +1,65 @@
 import React from 'react';
-import {FlatList, Text, TouchableOpacity, View, Image} from 'react-native';
+import {Alert, Image, Text, TouchableOpacity, View} from 'react-native';
+import {FlatListSlider} from 'react-native-flatlist-slider';
 import IconBrandFooter from '../icons/iconBrandFooter';
+import styles from './sliderStyle';
+import HTMLView from 'react-native-htmlview';
 
 function SliderComponent({navigation, sliderData}) {
-  const detailPress = id => {
-    navigation?.navigate('BrandDetail', {brandId: id});
+  const detailPress = (id, index) => {
+    navigation?.navigate('BrandDetail', {brandId: id, currentIndex: index});
   };
 
-  const renderItem = ({item}) => {
+  const getRemainingDays = ({remainingDateValue}) => {
+    if (remainingDateValue) {
+      const [day, month, year] = remainingDateValue.split('.');
+      const remainingDate = new Date(`${year}-${month}-${day}`);
+      const today = new Date();
+      const oneDay = 24 * 60 * 60 * 1000;
+      const timeDifference = remainingDate.getTime() - today.getTime();
+      const remainingDays = Math.ceil(timeDifference / oneDay);
+      return remainingDays > 0 ? remainingDays : 0;
+    }
+    return 0;
+  };
+
+  const Preview = ({item, index}) => {
     return (
-      <View style={{marginHorizontal: 16}}>
-        <View>
+      <View style={styles.container}>
+        <View style={styles.brandContainer}>
           <IconBrandFooter brandColor={item?.PromotionCardColor} />
         </View>
-        <View
-          style={{
-            borderWidth: 1,
-            borderColor: '#F4F6F5',
-            padding: 5,
-            borderRadius: 26,
-            position: 'absolute',
-            zIndex: 9999,
-            backgroundColor: 'white',
-            flex: 1,
-          }}>
-          <View>
-            <TouchableOpacity onPress={() => detailPress(item?.Id)} style={{}}>
+        <View style={styles.borderView}>
+          <TouchableOpacity onPress={() => detailPress(item?.Id, index)}>
+            <Image style={styles.imageBrand} source={{uri: item?.ImageUrl}} />
+            <View style={styles.brandIcon}>
               <Image
-                style={{
-                  width: 300,
-                  height: 300,
-                  resizeMode: 'contain',
-                  borderBottomLeftRadius: 100,
-                  borderBottomRightRadius: 26,
-                  borderTopLeftRadius: 26,
-                  borderTopRightRadius: 26,
-                  flex: 1,
-                }}
-                source={{uri: item?.ImageUrl}}
+                style={styles.brandIconImage}
+                source={{uri: item?.BrandIconUrl}}
               />
-              <View
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  zIndex: 1,
-                  marginTop: 20,
-                  marginLeft: 20,
-                }}>
-                <Image
-                  style={{
-                    width: 55,
-                    height: 55,
-                    resizeMode: 'contain',
-                  }}
-                  source={{uri: item?.BrandIconUrl}}
-                />
-              </View>
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              alignSelf: 'center',
-            }}>
-            <Text
-              style={{
-                fontSize: 14,
-                color: '#1D1E1C',
-                fontWeight: '700',
-                letterSpacing: -0.215,
+            </View>
+            <View style={styles.remainingView}>
+              <Text style={styles.remainingText}>
+                son {getRemainingDays(item?.RemainingText)} gün
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <View style={styles.titleView}>
+            <HTMLView
+              value={item?.Title || ''}
+              stylesheet={{
+                p: {
+                  fontSize: 14,
+                  color: '#1D1E1C',
+                  fontWeight: '700',
+                  letterSpacing: -0.215,
+                  textAlign: 'center',
+                },
               }}
-              numberOfLines={2}>
-              {item?.Title?.replace(/<[^>]*>/g, '')}
-            </Text>
+            />
           </View>
-          <View style={{alignItems: 'center', marginTop: 10}}>
-            <Text>{item?.ScenarioType}</Text>
+          <View style={styles.scenarioTypeView}>
+            <Text style={styles.scenarioTypeText}>{item?.ScenarioType}</Text>
           </View>
         </View>
       </View>
@@ -83,14 +68,20 @@ function SliderComponent({navigation, sliderData}) {
 
   return (
     <View>
-      <FlatList
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{flexDirection: 'row'}}
-        data={sliderData}
-        renderItem={renderItem}
-        keyExtractor={item => item?.id}
-      />
+      {sliderData.length > 0 ? (
+        <FlatListSlider
+          data={sliderData}
+          width={275}
+          timer={2000}
+          component={<Preview />}
+          onPress={item => Alert(JSON.stringify(item))}
+          indicatorActiveWidth={30}
+          contentContainerStyle={styles.contentContainerStyle}
+          indicatorActiveColor={'#F40000'}
+        />
+      ) : (
+        <Text>No data available</Text>
+      )}
     </View>
   );
 }
