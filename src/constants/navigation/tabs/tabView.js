@@ -17,7 +17,7 @@ function TabView({state, navigation}) {
           navigation={navigation}
           name="Discover"
           focused={isFocusedIndex === 0}
-          tabBarLabel={'Discover'}
+          tabBarLabel={'KEŞFET'}
         />
         <TabItemView
           navigation={navigation}
@@ -28,7 +28,7 @@ function TabView({state, navigation}) {
           navigation={navigation}
           name="Wallet"
           focused={isFocusedIndex === 2}
-          tabBarLabel="Wallet"
+          tabBarLabel="DAHA CÜZDAN"
         />
       </View>
     </Shadow>
