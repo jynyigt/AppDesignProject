@@ -11,6 +11,7 @@ import Service from '../../service';
 import IconArrowDown from '../../components/icons/iconArrowDown';
 import HTMLView from 'react-native-htmlview';
 import styles from './brandDetailStyle';
+import IconBack from '../../components/icons/iconBack';
 
 function BrandDetailScreen({navigation, route}) {
   const brandId = route?.params?.brandId;
@@ -50,12 +51,7 @@ function BrandDetailScreen({navigation, route}) {
             onPress={() => navigation?.goBack()}
             activeOpacity={0}
             style={styles.iconBackView}>
-            <IconArrowDown
-              color="white"
-              style={styles.iconArrow}
-              width={16}
-              height={16}
-            />
+            <IconBack />
           </Pressable>
         </View>
         <View style={{flex: 1}}>
